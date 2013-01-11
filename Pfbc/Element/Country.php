@@ -1,5 +1,5 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class Country extends Select
 {

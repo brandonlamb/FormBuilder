@@ -1,24 +1,27 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractOptionElement;
 
-class Radio extends \PFBC\OptionElement
+class Radio extends AbstractOptionElement
 {
-    protected $_attributes = array("type" => "radio");
+    protected $attributes = array("type" => "radio");
     protected $inline;
 
     public function render()
     {
-        $labelClass = $this->_attributes["type"];
-        if(!empty($this->inline))
+        $labelClass = $this->attributes["type"];
+        if (!empty($this->inline)) {
             $labelClass .= " inline";
+        }
 
         $count = 0;
         foreach ($this->options as $value => $text) {
             $value = $this->getOptionValue($value);
 
-            echo '<label class="', $labelClass . '"> <input id="', $this->_attributes["id"], '-', $count, '"', $this->getAttributes(array("id", "value", "checked")), ' value="', $this->filter($value), '"';
-            if(isset($this->_attributes["value"]) && $this->_attributes["value"] == $value)
+            echo '<label class="', $labelClass . '"> <input id="', $this->attributes["id"], '-', $count, '"', $this->getAttributes(array("id", "value", "checked")), ' value="', $this->filter($value), '"';
+            if (isset($this->attributes["value"]) && $this->attributes["value"] == $value) {
                 echo ' checked="checked"';
+            }
             echo '/> ', $text, ' </label> ';
             ++$count;
         }

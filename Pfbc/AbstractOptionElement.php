@@ -1,7 +1,7 @@
 <?php
-namespace PFBC;
+namespace Pfbc;
 
-abstract class AbstractOptionElement extends Element
+abstract class AbstractOptionElement extends AbstractElement
 {
     /**
      * @var array

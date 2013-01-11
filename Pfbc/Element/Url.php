@@ -1,13 +1,13 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class Url extends Textbox
 {
-    protected $_attributes = array("type" => "url");
+    protected $attributes = array("type" => "url");
 
     public function render()
     {
-        $this->validation[] = new \PFBC\Validation\Url;
+        $this->validation[] = new \Pfbc\Validation\Url;
         parent::render();
     }
 }

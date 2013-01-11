@@ -1,5 +1,5 @@
 <?php
-namespace PFBC;
+namespace Pfbc;
 
 abstract class AbstractElement extends AbstractBase
 {

@@ -1,5 +1,5 @@
 <?php
-namespace PFBC;
+namespace Pfbc;
 
 abstract class AbstractValidation extends AbstractBase
 {

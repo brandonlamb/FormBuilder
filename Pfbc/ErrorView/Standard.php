@@ -1,21 +1,21 @@
 <?php
-namespace PFBC\ErrorView;
-use Pfbc\ErrorView;
+namespace Pfbc\ErrorView;
+use Pfbc\AbstractErrorView;
 
-class Standard extends ErrorView
+class Standard extends AbstractErrorView
 {
     public function applyAjaxErrorResponse()
     {
-        $id = $this->_form->getAttribute("id");
+        $id = $this->_form->getAttribute('id');
         echo <<<JS
         var errorSize = response.errors.length;
-        if(errorSize == 1)
+        if (errorSize == 1)
             var errorFormat = "error was";
         else
             var errorFormat = errorSize + " errors were";
 
         var errorHTML = '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">×</a><strong class="alert-heading">The following ' + errorFormat + ' found:</strong><ul>';
-        for(e = 0; e < errorSize; ++e)
+        for (e = 0; e < errorSize; ++e)
             errorHTML += '<li>' + response.errors[e] + '</li>';
         errorHTML += '</ul></div>';
         jQuery("#$id").prepend(errorHTML);
@@ -29,8 +29,9 @@ JS;
         if (!empty($errors)) {
             $keys = array_keys($errors);
             $keySize = sizeof($keys);
-            for($k = 0; $k < $keySize; ++$k)
+            for ($k = 0; $k < $keySize; ++$k) {
                 $list = array_merge($list, $errors[$keys[$k]]);
+            }
         }
 
         return $list;
@@ -41,12 +42,13 @@ JS;
         $errors = $this->parse($this->_form->getErrors());
         if (!empty($errors)) {
             $size = sizeof($errors);
-            $errors = implode("</li><li>", $errors);
+            $errors = implode('</li><li>', $errors);
 
-            if($size == 1)
-                $format = "error was";
-            else
-                $format = $size . " errors were";
+            if ($size == 1) {
+                $format = 'error was';
+            } else {
+                $format = $size . ' errors were';
+            }
 
             echo <<<HTML
             <div class="alert alert-error">
@@ -62,8 +64,8 @@ HTML;
     {
         $errors = $this->parse($this->_form->getErrors());
         if (!empty($errors)) {
-            header("Content-type: application/json");
-            echo json_encode(array("errors" => $errors));
+            header('Content-type: application/json');
+            echo json_encode(array('errors' => $errors));
         }
     }
 }

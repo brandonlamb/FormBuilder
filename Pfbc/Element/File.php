@@ -1,7 +1,8 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractElement
 
-class File extends \PFBC\Element
+class File extends AbstractElement
 {
-    protected $_attributes = array("type" => "file");
+    protected $attributes = array("type" => "file");
 }

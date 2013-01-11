@@ -1,7 +1,8 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractElement;
 
-class HTML extends \PFBC\Element
+class HTML extends AbstractElement
 {
     public function __construct($value)
     {
@@ -11,6 +12,6 @@ class HTML extends \PFBC\Element
 
     public function render()
     {
-        echo $this->_attributes["value"];
+        echo $this->attributes["value"];
     }
 }

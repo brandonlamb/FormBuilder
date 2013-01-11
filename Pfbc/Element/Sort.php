@@ -1,7 +1,8 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractOptionElement;
 
-class Sort extends \PFBC\OptionElement
+class Sort extends AbstractOptionElement
 {
     protected $jQueryOptions;
 
@@ -21,26 +22,27 @@ class Sort extends \PFBC\OptionElement
 
     public function jQueryDocumentReady()
     {
-        echo 'jQuery("#', $this->_attributes["id"], '").sortable(', $this->jQueryOptions(), ');';
-        echo 'jQuery("#', $this->_attributes["id"], '").disableSelection();';
+        echo 'jQuery("#', $this->attributes["id"], '").sortable(', $this->jQueryOptions(), ');';
+        echo 'jQuery("#', $this->attributes["id"], '").disableSelection();';
     }
 
     public function render()
     {
-        if(substr($this->_attributes["name"], -2) != "[]")
-            $this->_attributes["name"] .= "[]";
+        if (substr($this->attributes["name"], -2) != "[]") {
+            $this->attributes["name"] .= "[]";
+        }
 
-        echo '<ul id="', $this->_attributes["id"], '">';
+        echo '<ul id="', $this->attributes["id"], '">';
         foreach ($this->options as $value => $text) {
             $value = $this->getOptionValue($value);
-            echo '<li class="ui-state-default"><input type="hidden" name="', $this->_attributes["name"], '" value="', $value, '"/>', $text, '</li>';
+            echo '<li class="ui-state-default"><input type="hidden" name="', $this->attributes["name"], '" value="', $value, '"/>', $text, '</li>';
         }
         echo "</ul>";
     }
 
     public function renderCSS()
     {
-        echo '#', $this->_attributes["id"], ' { list-style-type: none; margin: 0; padding: 0; cursor: pointer; max-width: 400px; }';
-        echo '#', $this->_attributes["id"], ' li { margin: 0.25em 0; padding: 0.5em; font-size: 1em; }';
+        echo '#', $this->attributes["id"], ' { list-style-type: none; margin: 0; padding: 0; cursor: pointer; max-width: 400px; }';
+        echo '#', $this->attributes["id"], ' li { margin: 0.25em 0; padding: 0.5em; font-size: 1em; }';
     }
 }

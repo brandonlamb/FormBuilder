@@ -1,15 +1,17 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractElement;
 
-class Textarea extends \PFBC\Element
+class Textarea extends AbstractElement
 {
-    protected $_attributes = array("rows" => "5");
+    protected $attributes = array("rows" => "5");
 
     public function render()
     {
         echo "<textarea", $this->getAttributes("value"), ">";
-        if(!empty($this->_attributes["value"]))
-            echo $this->filter($this->_attributes["value"]);
+        if (!empty($this->attributes["value"])) {
+            echo $this->filter($this->attributes["value"]);
+        }
         echo "</textarea>";
     }
 }

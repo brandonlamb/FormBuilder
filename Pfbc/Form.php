@@ -1,5 +1,5 @@
 <?php
-namespace PFBC;
+namespace Pfbc;
 
 class Form extends AbstractBase
 {
@@ -66,14 +66,14 @@ class Form extends AbstractBase
         }
 
         // The resourcesPath property is used to identify where third-party resources needed by the
-        // project are located. This property will automatically be set properly if the PFBC directory
-        // is uploaded within the server's document root.  If symbolic links are used to reference the PFBC
+        // project are located. This property will automatically be set properly if the Pfbc directory
+        // is uploaded within the server's document root.  If symbolic links are used to reference the Pfbc
         // directory, you may need to set this property in the form's configure method or directly in thi constructor
         $path = __DIR__ . '/Resources';
         if (strpos($path, $_SERVER['DOCUMENT_ROOT']) !== false) {
             $this->resourcesPath = substr($path, strlen($_SERVER['DOCUMENT_ROOT']));
         } else {
-            $this->resourcesPath = '/PFBC/Resources';
+            $this->resourcesPath = '/Pfbc/Resources';
         }
     }
 
@@ -85,26 +85,33 @@ class Form extends AbstractBase
         return array('attributes', 'elements', 'errorView');
     }
 
-    /*When ajax is used to submit the form's data, validation errors need to be manually sent back to the
-    form using json.*/
+    /**
+     * When ajax is used to submit the form's data, validation errors need to be manually sent back to the form using json
+     * @param string $id
+     */
     public static function renderAjaxErrorResponse($id = 'pfbc')
     {
         $form = self::recover($id);
-        if (!empty($form))
+        if ($form instanceof Form) {
             $form->errorView->renderAjaxErrorResponse();
+        }
     }
 
     /*Valldation errors are saved in the session after the form submission, and will be displayed to the user
     when redirected back to the form.*/
-    public static function setError($id, $errors, $element = "")
+    public static function setError($id, $errors, $element = '')
     {
-        if (!is_array($errors))
+        if (!is_array($errors)) {
             $errors = array($errors);
-        if (empty($_SESSION['pfbc'][$id]["errors"][$element]))
-            $_SESSION['pfbc'][$id]["errors"][$element] = array();
+        }
 
-        foreach($errors as $error)
-            $_SESSION['pfbc'][$id]["errors"][$element][] = $error;
+        if (empty($_SESSION['pfbc'][$id]['errors'][$element])) {
+            $_SESSION['pfbc'][$id]['errors'][$element] = array();
+        }
+
+        foreach ($errors as $error) {
+            $_SESSION['pfbc'][$id]['errors'][$element][] = $error;
+        }
     }
 
     protected static function setSessionValue($id, $element, $value)
@@ -121,92 +128,104 @@ class Form extends AbstractBase
 
     public static function clearValues($id = 'pfbc')
     {
-        if (!empty($_SESSION['pfbc'][$id]['values']))
+        if (!empty($_SESSION['pfbc'][$id]['values'])) {
             unset($_SESSION['pfbc'][$id]['values']);
+        }
     }
 
     protected static function getSessionValues($id = 'pfbc')
     {
         $values = array();
-        if (!empty($_SESSION['pfbc'][$id]['values']))
+        if (!empty($_SESSION['pfbc'][$id]['values'])) {
             $values = $_SESSION['pfbc'][$id]['values'];
+        }
 
         return $values;
     }
 
+    /**
+     * Determine if the form is valid
+     * @param string $id
+     * @param bool $clearValues
+     * @return bool
+     */
     public static function isValid($id = 'pfbc', $clearValues = true)
     {
         $valid = true;
-        /*The form's instance is recovered (unserialized) from the session.*/
+        // The form's instance is recovered (unserialized) from the session
         $form = self::recover($id);
-        if (!empty($form)) {
-            if ($_SERVER["REQUEST_METHOD"] == "POST")
-                $data = $_POST;
-            else
-                $data = $_GET;
+        if (empty($form)) {
+            return false;
+        }
 
-            /*Any values/errors stored in the session for this form are cleared.*/
-            self::clearValues($id);
-            self::clearErrors($id);
+        $data = ($_SERVER['REQUEST_METHOD'] == 'POST') ? $_POST : $_GET;
 
-            /*Each element's value is saved in the session and checked against any validation rules applied
-            to the element.*/
-            if (!empty($form->elements)) {
-                foreach ($form->elements as $element) {
-                    $name = $element->getAttribute("name");
-                    if (substr($name, -2) == "[]")
-                        $name = substr($name, 0, -2);
+        // Any values/errors stored in the session for this form are cleared
+        self::clearValues($id);
+        self::clearErrors($id);
 
-                    /*The File element must be handled differently b/c it uses the $_FILES superglobal and
-                    not $_GET or $_POST.*/
-                    if ($element instanceof Element\File)
-                        $data[$name] = $_FILES[$name]["name"];
+        // Each element's value is saved in the session and checked against any validation rules applied to the element
+        if (!empty($form->elements)) {
+            foreach ($form->elements as $element) {
+                $name = $element->getAttribute('name');
+                if (substr($name, -2) == '[]') {
+                    $name = substr($name, 0, -2);
+                }
 
-                    if (isset($data[$name])) {
-                        $value = $data[$name];
-                        if (is_array($value)) {
-                            $valueSize = sizeof($value);
-                            for($v = 0; $v < $valueSize; ++$v)
-                                $value[$v] = stripslashes($value[$v]);
-                        } else
-                            $value = stripslashes($value);
-                        self::setSessionValue($id, $name, $value);
-                    } else
-                        $value = null;
+                // The File element must be handled differently b/c it uses the $_FILES superglobal and not $_GET or $_POST
+                if ($element instanceof AbstractElement\File) {
+                    $data[$name] = $_FILES[$name]['name'];
+                }
 
-                    /*If a validation error is found, the error message is saved in the session along with
-                    the element's name.*/
-                    if (!$element->isValid($value)) {
-                        self::setError($id, $element->getErrors(), $name);
-                        $valid = false;
+                if (isset($data[$name])) {
+                    $value = $data[$name];
+                    if (is_array($value)) {
+                        $valueSize = sizeof($value);
+                        for($v = 0; $v < $valueSize; ++$v)
+                            $value[$v] = stripslashes($value[$v]);
+                    } else {
+                        $value = stripslashes($value);
                     }
+
+                    self::setSessionValue($id, $name, $value);
+                } else {
+                    $value = null;
+                }
+
+                // If a validation error is found, the error message is saved in the session along with the element's name
+                if (!$element->isValid($value)) {
+                    self::setError($id, $element->getErrors(), $name);
+                    $valid = false;
                 }
             }
+        }
 
-            /*If no validation errors were found, the form's session values are cleared.*/
-            if ($valid) {
-                if ($clearValues)
-                    self::clearValues($id);
-                self::clearErrors($id);
+        // If no validation errors were found, the form's session values are cleared
+        if ($valid) {
+            if ($clearValues) {
+                self::clearValues($id);
             }
-        } else
-            $valid = false;
+            self::clearErrors($id);
+        }
 
         return $valid;
     }
 
-    /*This method restores the serialized form instance.*/
+    /**
+     * This method restores the serialized form instance.
+     * @return Form|bool
+     */
     protected static function recover($id)
     {
-        return !empty($_SESSION['pfbc'][$id]['form']) ? unserialize($_SESSION['pfbc'][$id]['form']) : '';
+        return !empty($_SESSION['pfbc'][$id]['form']) ? unserialize($_SESSION['pfbc'][$id]['form']) : false;
     }
 
     /**
      * Add an element to the form
-     * @param Element $element
+     * @param AbstractElement $element
      * @return $this
      */
-    public function addElement(Element $element)
+    public function addElement(AbstractElement $element)
     {
         $element->setForm($this);
 
@@ -218,7 +237,7 @@ class Form extends AbstractBase
         $this->elements[] = $element;
 
         // For ease-of-use, the form tag's encytype attribute is automatically set if the File element class is added
-        if ($element instanceof Element\File) {
+        if ($element instanceof AbstractElement\File) {
             $this->attributes['enctype'] = 'multipart/form-data';
         }
 
@@ -277,13 +296,13 @@ class Form extends AbstractBase
     public function getErrors()
     {
         $errors = array();
-        if (session_id() == "")
-            $errors[""] = array("Error: The pfbc project requires an active session to function properly.  Simply add session_start() to your script before any output has been sent to the browser.");
+        if (session_id() == '')
+            $errors[''] = array("Error: The pfbc project requires an active session to function properly.  Simply add session_start() to your script before any output has been sent to the browser.");
         else {
             $errors = array();
             $id = $this->attributes['id'];
-            if (!empty($_SESSION['pfbc'][$id]["errors"]))
-                $errors = $_SESSION['pfbc'][$id]["errors"];
+            if (!empty($_SESSION['pfbc'][$id]['errors']))
+                $errors = $_SESSION['pfbc'][$id]['errors'];
         }
 
         return $errors;
@@ -295,8 +314,8 @@ class Form extends AbstractBase
             foreach ($this->elements as $element) {
                 $label = $element->getLabel();
                 if (!empty($label)) {
-                    $element->setAttribute("placeholder", $label);
-                    $element->setLabel("");
+                    $element->setAttribute('placeholder', $label);
+                    $element->setLabel('');
                 }
             }
         }
@@ -311,14 +330,15 @@ class Form extends AbstractBase
             $this->setValues($values);
         $this->applyValues();
 
-        if ($returnHTML)
+        if ($returnHTML) {
             ob_start();
+        }
 
         $this->renderCSS();
         $this->view->render();
         $this->renderJS();
 
-        /*The form's instance is serialized and saved in a session variable for use during validation.*/
+        // The form's instance is serialized and saved in a session variable for use during validation
         $this->save();
 
         if ($returnHTML) {
@@ -336,16 +356,19 @@ class Form extends AbstractBase
         echo '<style type="text/css">';
         $this->view->renderCSS();
         $this->errorView->renderCSS();
-        foreach($this->elements as $element)
+
+        foreach ($this->elements as $element) {
             $element->renderCSS();
+        }
         echo '</style>';
     }
 
     protected function renderCSSFiles()
     {
         $urls = array();
-        if (!in_array("bootstrap", $this->prevent))
+        if (!in_array('bootstrap', $this->prevent)) {
             $urls[] = $this->prefix . "://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css";
+        }
 
         foreach ($this->elements as $element) {
             $elementUrls = $element->getCSSFiles();
@@ -356,7 +379,7 @@ class Form extends AbstractBase
         /*This section prevents duplicate css files from being loaded.*/
         if (!empty($urls)) {
             $urls = arrayvalues(array_unique($urls));
-            foreach($urls as $url)
+            foreach ($urls as $url)
                 echo '<link type="text/css" rel="stylesheet" href="', $url, '"/>';
         }
     }
@@ -367,7 +390,7 @@ class Form extends AbstractBase
 
         echo '<script type="text/javascript">';
         $this->view->renderJS();
-        foreach($this->elements as $element)
+        foreach ($this->elements as $element)
             $element->renderJS();
 
         $id = $this->attributes['id'];
@@ -386,7 +409,7 @@ JS;
             echo 'jQuery("#', $id, ' :input:visible:enabled:first").focus();';
 
         $this->view->jQueryDocumentReady();
-        foreach($this->elements as $element)
+        foreach ($this->elements as $element)
             $element->jQueryDocumentReady();
 
         /*For ajax, an anonymous onsubmit javascript function is bound to the form using jQuery.  jQuery's
@@ -439,22 +462,27 @@ JS;
     protected function renderJSFiles()
     {
         $urls = array();
-        if (!in_array("jQuery", $this->prevent))
+        if (!in_array("jQuery", $this->prevent)) {
             $urls[] = $this->prefix . "://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-        if (!in_array("bootstrap", $this->prevent))
+        }
+
+        if (!in_array('bootstrap', $this->prevent)) {
             $urls[] = $this->prefix . "://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js";
+        }
 
         foreach ($this->elements as $element) {
             $elementUrls = $element->getJSFiles();
-            if (is_array($elementUrls))
+            if (is_array($elementUrls)) {
                 $urls = array_merge($urls, $elementUrls);
+            }
         }
 
         /*This section prevents duplicate js files from being loaded.*/
         if (!empty($urls)) {
             $urls = arrayvalues(array_unique($urls));
-            foreach($urls as $url)
+            foreach ($urls as $url) {
                 echo '<script type="text/javascript" src="', $url, '"></script>';
+            }
         }
     }
 

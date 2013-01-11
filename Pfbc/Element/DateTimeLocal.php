@@ -1,7 +1,7 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class DateTimeLocal extends Textbox
 {
-    protected $_attributes = array("type" => "datetime-local");
+    protected $attributes = array("type" => "datetime-local");
 }

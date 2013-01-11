@@ -1,5 +1,5 @@
 <?php
-namespace PFBC;
+namespace Pfbc;
 
 abstract class AbstractView extends AbstractBase
 {
@@ -46,5 +46,5 @@ abstract class AbstractView extends AbstractBase
      * Render a label
      * @param Element $element
      */
-    protected function renderLabel(Element $element) {}
+    protected function renderLabel(AbstractElement $element) {}
 }

@@ -1,13 +1,13 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class Number extends Textbox
 {
-    protected $_attributes = array("type" => "number");
+    protected $attributes = array("type" => "number");
 
     public function render()
     {
-        $this->validation[] = new \PFBC\Validation\Numeric;
+        $this->validation[] = new \Pfbc\Validation\Numeric;
         parent::render();
     }
 }

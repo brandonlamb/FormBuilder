@@ -1,5 +1,5 @@
 <?php
-namespace PFBC\Validation;
+namespace Pfbc\Validation;
 
 class AlphaNumeric extends RegExp
 {

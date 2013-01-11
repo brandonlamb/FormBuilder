@@ -1,12 +1,13 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class jQueryUIDate extends Textbox
 {
-    protected $_attributes = array(
+    protected $attributes = array(
         "type" => "text",
         "autocomplete" => "off"
     );
+
     protected $jQueryOptions;
 
     public function getCSSFiles()
@@ -26,12 +27,12 @@ class jQueryUIDate extends Textbox
     public function jQueryDocumentReady()
     {
         parent::jQueryDocumentReady();
-        echo 'jQuery("#', $this->_attributes["id"], '").datepicker(', $this->jQueryOptions(), ');';
+        echo 'jQuery("#', $this->attributes["id"], '").datepicker(', $this->jQueryOptions(), ');';
     }
 
     public function render()
     {
-        $this->validation[] = new \PFBC\Validation\Date;
+        $this->validation[] = new \Pfbc\Validation\Date;
         parent::render();
     }
 }

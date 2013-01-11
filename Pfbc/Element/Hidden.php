@@ -1,17 +1,20 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
+use Pfbc\AbstractElement;
 
-class Hidden extends \PFBC\Element
+class Hidden extends AbstractElement
 {
-    protected $_attributes = array("type" => "hidden");
+    protected $attributes = array("type" => "hidden");
 
     public function __construct($name, $value = "", array $properties = null)
     {
-        if(!is_array($properties))
+        if (!is_array($properties)) {
             $properties = array();
+        }
 
-        if(!empty($value))
+        if (!empty($value)) {
             $properties["value"] = $value;
+        }
 
         parent::__construct("", $name, $properties);
     }

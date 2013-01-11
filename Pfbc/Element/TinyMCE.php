@@ -1,5 +1,5 @@
 <?php
-namespace PFBC\Element;
+namespace Pfbc\Element;
 
 class TinyMCE extends Textarea
 {
@@ -8,30 +8,33 @@ class TinyMCE extends Textarea
     public function render()
     {
         echo "<textarea", $this->getAttributes(array("value", "required")), ">";
-        if(!empty($this->_attributes["value"]))
-            echo $this->_attributes["value"];
+        if (!empty($this->attributes["value"])) {
+            echo $this->attributes["value"];
+        }
         echo "</textarea>";
     }
 
     public function renderJS()
     {
-        echo 'tinyMCE.init({ mode: "exact", elements: "', $this->_attributes["id"], '", width: "100%"';
-        if(!empty($this->basic))
+        echo 'tinyMCE.init({ mode: "exact", elements: "', $this->attributes["id"], '", width: "100%"';
+        if (!empty($this->basic)) {
             echo ', theme: "simple"';
-        else
+        } else {
             echo ', theme: "advanced", theme_advanced_resizing: true';
+        }
         echo '});';
 
-        $ajax = $this->_form->getAjax();
-        $id = $this->_form->getAttribute("id");
-        if(!empty($ajax))
+        $ajax = $this->form->getAjax();
+        $id = $this->form->getAttribute("id");
+        if (!empty($ajax)) {
             echo 'jQuery("#$id").bind("submit", function() { tinyMCE.triggerSave(); });';
+        }
     }
 
     public function getJSFiles()
     {
         return array(
-            $this->_form->getResourcesPath() . "/tiny_mce/tiny_mce.js"
+            $this->form->getResourcesPath() . "/tiny_mce/tiny_mce.js"
         );
     }
 }
