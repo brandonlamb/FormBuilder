@@ -1,7 +1,8 @@
 <?php
 namespace PFBC\ErrorView;
+use Pfbc\ErrorView;
 
-class Standard extends \PFBC\ErrorView
+class Standard extends ErrorView
 {
     public function applyAjaxErrorResponse()
     {
