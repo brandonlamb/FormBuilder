@@ -105,50 +105,39 @@ class Form extends AbstractBase
             $errors = array($errors);
         }
 
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-
-        if (empty($session[$id]['errors'][$element])) {
-            $session[$id]['errors'][$element] = array();
+        if (empty($_SESSION['pfbc'][$id]['errors'][$element])) {
+            $_SESSION['pfbc'][$id]['errors'][$element] = array();
         }
 
         foreach ($errors as $error) {
-            $session[$id]['errors'][$element][] = $error;
+            $_SESSION['pfbc'][$id]['errors'][$element][] = $error;
         }
-
-        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     protected static function setSessionValue($id, $element, $value)
     {
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-        $session[$id]['values'][$element] = $value;
-        $this->di->getShared('session')->set('pfbc', $session);
+        $_SESSION['pfbc'][$id]['values'][$element] = $value;
     }
 
     public static function clearErrors($id = 'pfbc')
     {
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-        if (!empty($session[$id]['errors'])) {
-            unset($session[$id]['errors']);
+        if (!empty($_SESSION['pfbc'][$id]['errors'])) {
+            unset($_SESSION['pfbc'][$id]['errors']);
         }
-        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     public static function clearValues($id = 'pfbc')
     {
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-        if (!empty($session[$id]['values'])) {
-            unset($session[$id]['values']);
+        if (!empty($_SESSION['pfbc'][$id]['values'])) {
+            unset($_SESSION['pfbc'][$id]['values']);
         }
-        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     protected static function getSessionValues($id = 'pfbc')
     {
         $values = array();
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-        if (!empty($session[$id]['values'])) {
-            $values = $session[$id]['values'];
+        if (!empty($_SESSION['pfbc'][$id]['values'])) {
+            $values = $_SESSION['pfbc'][$id]['values'];
         }
 
         return $values;
@@ -228,8 +217,7 @@ class Form extends AbstractBase
      */
     protected static function recover($id)
     {
-        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
-        return !empty($session[$id]['form']) ? unserialize($session[$id]['form']) : false;
+        return !empty($_SESSION['pfbc'][$id]['form']) ? unserialize($_SESSION['pfbc'][$id]['form']) : false;
     }
 
     /**
@@ -308,15 +296,13 @@ class Form extends AbstractBase
     public function getErrors()
     {
         $errors = array();
-        $session = $this->di->getShared('session');
-        if ($session->isStarted() === false) {
+        if (session_id() == '')
             $errors[''] = array("Error: The pfbc project requires an active session to function properly.  Simply add session_start() to your script before any output has been sent to the browser.");
-        } else {
+        else {
             $errors = array();
             $id = $this->attributes['id'];
-            if (!empty($session[$id]['errors'])) {
-                $errors = $session[$id]['errors'];
-            }
+            if (!empty($_SESSION['pfbc'][$id]['errors']))
+                $errors = $_SESSION['pfbc'][$id]['errors'];
         }
 
         return $errors;
@@ -494,25 +480,17 @@ JS;
 
         /*This section prevents duplicate js files from being loaded.*/
         if (!empty($urls)) {
-            $urls = array_values(array_unique($urls));
+            $urls = arrayvalues(array_unique($urls));
             foreach ($urls as $url) {
                 echo '<script type="text/javascript" src="', $url, '"></script>';
             }
         }
     }
 
-    /**
-     * The save method serialized the form's instance and saves it in the session
-     * @return $this
-     */
+    /*The save method serialized the form's instance and saves it in the session.*/
     protected function save()
     {
-        $session = $this->di->getShared('session')->get('pfbc');
-
-        $session[$this->attributes['id']]['form'] = serialize($data);
-        $this->di->getShared('session')->set('pfbc', $session);
-
-        return $this;
+        $_SESSION['pfbc'][$this->attributes['id']]['form'] = serialize($this);
     }
 
     /**
