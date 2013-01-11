@@ -480,7 +480,7 @@ JS;
 
         /*This section prevents duplicate js files from being loaded.*/
         if (!empty($urls)) {
-            $urls = arrayvalues(array_unique($urls));
+            $urls = array_values(array_unique($urls));
             foreach ($urls as $url) {
                 echo '<script type="text/javascript" src="', $url, '"></script>';
             }
