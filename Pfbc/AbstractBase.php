@@ -135,4 +135,15 @@ abstract class AbstractBase
         $this->attributes[$attribute] = $value;
         return $this;
     }
+
+    /**
+     * Set the form object
+     * @param Form $form
+     * @return $this
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
+        return $this;
+    }
 }

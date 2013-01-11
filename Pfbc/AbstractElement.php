@@ -215,17 +215,6 @@ abstract class AbstractElement extends AbstractBase
     public function renderJS() {}
 
     /**
-     * Set the form object
-     * @param Form $form
-     * @return $this
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
-        return $this;
-    }
-
-    /**
      * Set the element's label text
      * @param string $label
      * @return $this
