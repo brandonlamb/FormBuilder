@@ -47,8 +47,8 @@ JS;
         }
         echo ');';
 
-        $ajax = $this->_form->getAjax();
-        $id = $this->_form->getAttribute("id");
+        $ajax = $this->form->getAjax();
+        $id = $this->form->getAttribute("id");
         if (!empty($ajax)) {
             echo 'jQuery("#', $id, '").bind("submit", function() { CKEDITOR.instances["', $this->_attributes["id"], '"].updateElement(); });';
         }
@@ -56,6 +56,6 @@ JS;
 
     public function getJSFiles()
     {
-        return array($this->_form->getResourcesPath() . '/ckeditor/ckeditor.js');
+        return array($this->form->getResourcesPath() . '/ckeditor/ckeditor.js');
     }
 }
