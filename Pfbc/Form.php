@@ -105,45 +105,50 @@ class Form extends AbstractBase
             $errors = array($errors);
         }
 
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        $session = $this->di->getShared('session')->get('pfbc');
 
-        if (empty($session->errors[$element])) {
-            $session->errors[$element] = array();
+        if (empty($session[$id]['errors'][$element])) {
+            $session[$id]['errors'][$element] = array();
         }
 
         foreach ($errors as $error) {
-            $session->errors[$element][] = $error;
+            $session[$id]['errors'][$element][] = $error;
         }
+
+        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     protected static function setSessionValue($id, $element, $value)
     {
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-        $session->values[$element] = $value;
+        $session = $this->di->getShared('session')->get('pfbc');
+        $session[$id]['values'][$element] = $value;
+        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     public static function clearErrors($id = 'pfbc')
     {
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-        if (!empty($session->errors)) {
-            unset($session->errors);
+        $session = $this->di->getShared('session')->get('pfbc');
+        if (!empty($session[$id]['errors'])) {
+            unset($session[$id]['errors']);
         }
+        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     public static function clearValues($id = 'pfbc')
     {
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-        if (!empty($session->values)) {
-            unset($session->values);
+        $session = $this->di->getShared('session')->get('pfbc');
+        if (!empty($session[$id]['values'])) {
+            unset($session[$id]['values']);
         }
+        $this->di->getShared('session')->set('pfbc', $session);
     }
 
     protected static function getSessionValues($id = 'pfbc')
     {
         $values = array();
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-        if (!empty($session->values)) {
-            $values = $session->values;
+        $session = $this->di->getShared('session')->get('pfbc');
+        if (!empty($session[$id]['values'])) {
+            $values = $session[$id]['values'];
         }
 
         return $values;
@@ -223,8 +228,8 @@ class Form extends AbstractBase
      */
     protected static function recover($id)
     {
-        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-        return !empty($session->form) ? unserialize($session->form) : false;
+        $session = $this->di->getShared('session')->get('pfbc');
+        return !empty($session[$id]['form']) ? unserialize($session[$id]['form']) : false;
     }
 
     /**
@@ -303,14 +308,14 @@ class Form extends AbstractBase
     public function getErrors()
     {
         $errors = array();
-        if (session_id() == '') {
+        $session = $this->di->getShared('session');
+        if ($session->isStarted() === false) {
             $errors[''] = array("Error: The pfbc project requires an active session to function properly.  Simply add session_start() to your script before any output has been sent to the browser.");
         } else {
             $errors = array();
             $id = $this->attributes['id'];
-            $session = new \Phalcon\Session\Bag('pfbc-' . $id);
-            if (!empty($session->errors)) {
-                $errors = $session->errors;
+            if (!empty($session[$id]['errors'])) {
+                $errors = $session[$id]['errors'];
             }
         }
 
@@ -502,8 +507,11 @@ JS;
      */
     protected function save()
     {
-        $this->session = new \Phalcon\Session\Bag('pfbc-' . $this->attributes['id']);
-        $this->session->form = serialize($data);
+        $session = $this->di->getShared('session')->get('pfbc');
+
+        $session[$this->attributes['id']]['form'] = serialize($data);
+        $this->di->getShared('session')->set('pfbc', $session);
+
         return $this;
     }
 

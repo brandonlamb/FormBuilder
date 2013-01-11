@@ -1,7 +1,8 @@
 <?php
 namespace Pfbc;
+use Phalcon\DI\Injectable;
 
-abstract class AbstractBase
+abstract class AbstractBase extends Injectable
 {
     /**
      * @var array
