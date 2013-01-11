@@ -105,39 +105,45 @@ class Form extends AbstractBase
             $errors = array($errors);
         }
 
-        if (empty($_SESSION['pfbc'][$id]['errors'][$element])) {
-            $_SESSION['pfbc'][$id]['errors'][$element] = array();
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+
+        if (empty($session->errors[$element])) {
+            $session->errors[$element] = array();
         }
 
         foreach ($errors as $error) {
-            $_SESSION['pfbc'][$id]['errors'][$element][] = $error;
+            $session->errors[$element][] = $error;
         }
     }
 
     protected static function setSessionValue($id, $element, $value)
     {
-        $_SESSION['pfbc'][$id]['values'][$element] = $value;
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        $session->values[$element] = $value;
     }
 
     public static function clearErrors($id = 'pfbc')
     {
-        if (!empty($_SESSION['pfbc'][$id]['errors'])) {
-            unset($_SESSION['pfbc'][$id]['errors']);
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        if (!empty($session->errors)) {
+            unset($session->errors);
         }
     }
 
     public static function clearValues($id = 'pfbc')
     {
-        if (!empty($_SESSION['pfbc'][$id]['values'])) {
-            unset($_SESSION['pfbc'][$id]['values']);
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        if (!empty($session->values)) {
+            unset($session->values);
         }
     }
 
     protected static function getSessionValues($id = 'pfbc')
     {
         $values = array();
-        if (!empty($_SESSION['pfbc'][$id]['values'])) {
-            $values = $_SESSION['pfbc'][$id]['values'];
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        if (!empty($session->values)) {
+            $values = $session->values;
         }
 
         return $values;
@@ -217,7 +223,8 @@ class Form extends AbstractBase
      */
     protected static function recover($id)
     {
-        return !empty($_SESSION['pfbc'][$id]['form']) ? unserialize($_SESSION['pfbc'][$id]['form']) : false;
+        $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+        return !empty($session->form) ? unserialize($session->form) : false;
     }
 
     /**
@@ -296,13 +303,15 @@ class Form extends AbstractBase
     public function getErrors()
     {
         $errors = array();
-        if (session_id() == '')
+        if (session_id() == '') {
             $errors[''] = array("Error: The pfbc project requires an active session to function properly.  Simply add session_start() to your script before any output has been sent to the browser.");
-        else {
+        } else {
             $errors = array();
             $id = $this->attributes['id'];
-            if (!empty($_SESSION['pfbc'][$id]['errors']))
-                $errors = $_SESSION['pfbc'][$id]['errors'];
+            $session = new \Phalcon\Session\Bag('pfbc-' . $id);
+            if (!empty($session->errors)) {
+                $errors = $session->errors;
+            }
         }
 
         return $errors;
@@ -480,17 +489,22 @@ JS;
 
         /*This section prevents duplicate js files from being loaded.*/
         if (!empty($urls)) {
-            $urls = arrayvalues(array_unique($urls));
+            $urls = array_values(array_unique($urls));
             foreach ($urls as $url) {
                 echo '<script type="text/javascript" src="', $url, '"></script>';
             }
         }
     }
 
-    /*The save method serialized the form's instance and saves it in the session.*/
+    /**
+     * The save method serialized the form's instance and saves it in the session
+     * @return $this
+     */
     protected function save()
     {
-        $_SESSION['pfbc'][$this->attributes['id']]['form'] = serialize($this);
+        $this->session = new \Phalcon\Session\Bag('pfbc-' . $this->attributes['id']);
+        $this->session->form = serialize($data);
+        return $this;
     }
 
     /**
