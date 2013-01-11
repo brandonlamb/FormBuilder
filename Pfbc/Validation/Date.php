@@ -1,5 +1,5 @@
 <?php
-namespace PFBC\Validation;
+namespace Pfbc\Validation;
 use Pfbc\AbstractValidation;
 
 class Date extends AbstractValidation

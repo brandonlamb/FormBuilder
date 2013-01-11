@@ -90,7 +90,9 @@ abstract class AbstractBase
      */
     public function getAttributes($ignore = null)
     {
-        empty($this->attributes) && return '';
+        if (empty($this->attributes)) {
+            return '';
+        }
         !is_array($ignore) && $ignore = array($ignore);
 
         $str = '';
