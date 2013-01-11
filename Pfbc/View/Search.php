@@ -1,5 +1,5 @@
 <?php
-namespace PFBC\View;
+namespace Pfbc\View;
 
 class Search extends Inline
 {

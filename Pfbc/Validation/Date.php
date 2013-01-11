@@ -1,7 +1,8 @@
 <?php
 namespace PFBC\Validation;
+use Pfbc\AbstractValidation;
 
-class Date extends \PFBC\Validation
+class Date extends AbstractValidation
 {
     protected $message = "Error: %element% must contain a valid date.";
 

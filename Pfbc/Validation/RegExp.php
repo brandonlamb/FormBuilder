@@ -1,7 +1,8 @@
 <?php
-namespace PFBC\Validation;
+namespace Pfbc\Validation;
+use Pfbc\AbstractValidation;
 
-class RegExp extends \PFBC\Validation
+class RegExp extends AbstractValidation
 {
     protected $message = "Error: %element% contains invalid characters.";
     protected $pattern;
@@ -14,9 +15,6 @@ class RegExp extends \PFBC\Validation
 
     public function isValid($value)
     {
-        if($this->isNotApplicable($value) || preg_match($this->pattern, $value))
-
-            return true;
-        return false;
+        return ($this->isNotApplicable($value) || preg_match($this->pattern, $value)) ? true : false;
     }
 }

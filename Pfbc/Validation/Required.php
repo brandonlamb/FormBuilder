@@ -1,7 +1,8 @@
 <?php
-namespace PFBC\Validation;
+namespace Pfbc\Validation;
+use Pfbc\AbstractValidation;
 
-class Required extends \PFBC\Validation
+class Required extends AbstractValidation
 {
     protected $message = "Error: %element% is a required field.";
 
@@ -18,8 +19,9 @@ class Required extends \PFBC\Validation
                         }
                     }
                 }
-            } elseif($value !== "")
+            } elseif ($value !== "") {
                 $valid = true;
+            }
         }
 
         return $valid;

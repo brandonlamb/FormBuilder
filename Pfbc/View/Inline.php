@@ -1,7 +1,9 @@
 <?php
-namespace PFBC\View;
+namespace Pfbc\View;
+use Pfbc\AbstractView;
+use Pfbc\AbstractElement;
 
-class Inline extends \PFBC\View
+class Inline extends AbstractView
 {
     protected $class = "form-inline";
 
@@ -16,8 +18,9 @@ class Inline extends \PFBC\View
         $elementSize = sizeof($elements);
         $elementCount = 0;
         for ($e = 0; $e < $elementSize; ++$e) {
-            if($e > 0)
+            if ($e > 0) {
                 echo ' ';
+            }
             $element = $elements[$e];
             echo $this->renderLabel($element), ' ', $element->render(), $this->renderDescriptions($element);
             ++$elementCount;
@@ -26,13 +29,14 @@ class Inline extends \PFBC\View
         echo '</form>';
     }
 
-    protected function renderLabel(\PFBC\Element $element)
+    protected function renderLabel(AbstractElement $element)
     {
         $label = $element->getLabel();
         if (!empty($label)) {
             echo '<label for="', $element->getAttribute("id"), '">';
-            if($element->isRequired())
+            if ($element->isRequired()) {
                 echo '<span class="required">* </span>';
+            }
             echo $label;
             echo '</label>';
         }

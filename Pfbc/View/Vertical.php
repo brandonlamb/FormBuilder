@@ -1,7 +1,9 @@
 <?php
-namespace PFBC\View;
+namespace Pfbc\View;
+use Pfbc\AbstractView;
+use Pfbc\AbstractElement;
 
-class Vertical extends \PFBC\View
+class Vertical extends AbstractView
 {
     public function render()
     {
@@ -14,14 +16,16 @@ class Vertical extends \PFBC\View
         for ($e = 0; $e < $elementSize; ++$e) {
             $element = $elements[$e];
 
-            if ($element instanceof \PFBC\Element\Button) {
-                if($e == 0 || !$elements[($e - 1)] instanceof \PFBC\Element\Button)
+            if ($element instanceof \Pfbc\Element\Button) {
+                if ($e == 0 || !$elements[($e - 1)] instanceof \Pfbc\Element\Button) {
                     echo '<div class="form-actions">';
-                else
+                } else {
                     echo ' ';
+                }
                 $element->render();
-                if(($e + 1) == $elementSize || !$elements[($e + 1)] instanceof \PFBC\Element\Button)
+                if (($e + 1) == $elementSize || !$elements[($e + 1)] instanceof \Pfbc\Element\Button) {
                     echo '</div>';
+                }
             } else {
                 $this->renderLabel($element);
                 $element->render();
@@ -33,13 +37,14 @@ class Vertical extends \PFBC\View
         echo '</form>';
     }
 
-    protected function renderLabel(\PFBC\Element $element)
+    protected function renderLabel(AbstractElement $element)
     {
         $label = $element->getLabel();
         echo '<label for="', $element->getAttribute("id"), '">';
         if (!empty($label)) {
-            if($element->isRequired())
+            if ($element->isRequired()) {
                 echo '<span class="required">* </span>';
+            }
             echo $label;
         }
         echo '</label>';
