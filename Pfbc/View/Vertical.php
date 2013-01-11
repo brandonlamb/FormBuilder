@@ -7,10 +7,10 @@ class Vertical extends AbstractView
 {
     public function render()
     {
-        echo '<form', $this->_form->getAttributes(), '>';
-        $this->_form->getErrorView()->render();
+        echo '<form', $this->form->getAttributes(), '>';
+        $this->form->getErrorView()->render();
 
-        $elements = $this->_form->getElements();
+        $elements = $this->form->getElements();
         $elementSize = sizeof($elements);
         $elementCount = 0;
         for ($e = 0; $e < $elementSize; ++$e) {

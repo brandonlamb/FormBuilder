@@ -9,12 +9,12 @@ class RightLabel extends AbstractView
 
     public function render()
     {
-        $this->_form->appendAttribute("class", $this->class);
+        $this->form->appendAttribute("class", $this->class);
 
-        echo '<form', $this->_form->getAttributes(), '><fieldset>';
-        $this->_form->getErrorView()->render();
+        echo '<form', $this->form->getAttributes(), '><fieldset>';
+        $this->form->getErrorView()->render();
 
-        $elements = $this->_form->getElements();
+        $elements = $this->form->getElements();
         $elementSize = sizeof($elements);
         $elementCount = 0;
         for ($e = 0; $e < $elementSize; ++$e) {

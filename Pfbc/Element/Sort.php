@@ -9,14 +9,14 @@ class Sort extends AbstractOptionElement
     public function getCSSFiles()
     {
         return array(
-            $this->_form->getPrefix() . "://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css"
+            $this->form->getPrefix() . "://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css"
         );
     }
 
     public function getJSFiles()
     {
         return array(
-            $this->_form->getPrefix() . "://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"
+            $this->form->getPrefix() . "://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"
         );
     }
 

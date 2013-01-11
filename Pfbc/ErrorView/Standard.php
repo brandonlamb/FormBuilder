@@ -6,7 +6,7 @@ class Standard extends AbstractErrorView
 {
     public function applyAjaxErrorResponse()
     {
-        $id = $this->_form->getAttribute('id');
+        $id = $this->form->getAttribute('id');
         echo <<<JS
         var errorSize = response.errors.length;
         if (errorSize == 1)
@@ -39,7 +39,7 @@ JS;
 
     public function render()
     {
-        $errors = $this->parse($this->_form->getErrors());
+        $errors = $this->parse($this->form->getErrors());
         if (!empty($errors)) {
             $size = sizeof($errors);
             $errors = implode('</li><li>', $errors);
@@ -62,7 +62,7 @@ HTML;
 
     public function renderAjaxErrorResponse()
     {
-        $errors = $this->parse($this->_form->getErrors());
+        $errors = $this->parse($this->form->getErrors());
         if (!empty($errors)) {
             header('Content-type: application/json');
             echo json_encode(array('errors' => $errors));
