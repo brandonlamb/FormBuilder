@@ -378,9 +378,10 @@ class Form extends AbstractBase
 
         /*This section prevents duplicate css files from being loaded.*/
         if (!empty($urls)) {
-            $urls = arrayvalues(array_unique($urls));
-            foreach ($urls as $url)
+            $urls = array_values(array_unique($urls));
+            foreach ($urls as $url) {
                 echo '<link type="text/css" rel="stylesheet" href="', $url, '"/>';
+            }
         }
     }
 
