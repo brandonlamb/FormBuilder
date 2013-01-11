@@ -28,15 +28,4 @@ abstract class AbstractErrorView extends AbstractBase
     }
 
     public function renderCSS() {}
-
-    /**
-     * Sets the form object
-     * @param Form $form
-     * @return $this
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
-        return $this;
-    }
 }
