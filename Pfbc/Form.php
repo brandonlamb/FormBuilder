@@ -105,7 +105,7 @@ class Form extends AbstractBase
             $errors = array($errors);
         }
 
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
 
         if (empty($session[$id]['errors'][$element])) {
             $session[$id]['errors'][$element] = array();
@@ -120,14 +120,14 @@ class Form extends AbstractBase
 
     protected static function setSessionValue($id, $element, $value)
     {
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
         $session[$id]['values'][$element] = $value;
         $this->di->getShared('session')->set('pfbc', $session);
     }
 
     public static function clearErrors($id = 'pfbc')
     {
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
         if (!empty($session[$id]['errors'])) {
             unset($session[$id]['errors']);
         }
@@ -136,7 +136,7 @@ class Form extends AbstractBase
 
     public static function clearValues($id = 'pfbc')
     {
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
         if (!empty($session[$id]['values'])) {
             unset($session[$id]['values']);
         }
@@ -146,7 +146,7 @@ class Form extends AbstractBase
     protected static function getSessionValues($id = 'pfbc')
     {
         $values = array();
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
         if (!empty($session[$id]['values'])) {
             $values = $session[$id]['values'];
         }
@@ -228,7 +228,7 @@ class Form extends AbstractBase
      */
     protected static function recover($id)
     {
-        $session = $this->di->getShared('session')->get('pfbc');
+        $session = \Phalcon\DI::getDefault()->getShared('session')->get('pfbc');
         return !empty($session[$id]['form']) ? unserialize($session[$id]['form']) : false;
     }
 
