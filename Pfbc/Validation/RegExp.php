@@ -4,10 +4,10 @@ use Pfbc\AbstractValidation;
 
 class RegExp extends AbstractValidation
 {
-    protected $message = "Error: %element% contains invalid characters.";
+    protected $message = 'Error: %element% contains invalid characters.';
     protected $pattern;
 
-    public function __construct($pattern, $message = "")
+    public function __construct($pattern, $message = '')
     {
         $this->pattern = $pattern;
         parent::__construct($message);

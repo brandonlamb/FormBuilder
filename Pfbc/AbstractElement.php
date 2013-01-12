@@ -61,24 +61,6 @@ abstract class AbstractElement extends AbstractBase
         return array('attributes', 'label', 'validation');
     }
 
-    /*If an element requires external stylesheets, this method is used to return an
-    array of entries that will be applied before the form is rendered.*/
-    public function getCSSFiles() {}
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * If an element requires external javascript file, this method is used to return an
-     * array of entries that will be applied after the form is rendered.
-     */
-    public function getJSFiles()
-    {
-
-    }
-
     /**
      * Get form label
      * @return string
@@ -159,38 +141,6 @@ abstract class AbstractElement extends AbstractBase
     }
 
     /**
-     * If an element requires jQuery, this method is used to include a section of javascript
-     * that will be applied within the jQuery(document).ready(function() {}); section after the
-     * form has been rendered.
-     */
-    public function jQueryDocumentReady() {}
-
-    /**
-     * Elements that have the jQueryOptions property included (Date, Sort, Checksort, and Color)
-     * can make use of this method to render out the element's appropriate jQuery options.
-     */
-    public function jQueryOptions()
-    {
-        if (!empty($this->jQueryOptions)) {
-            $options = '';
-            foreach ($this->jQueryOptions as $option => $value) {
-                if (!empty($options)) {
-                    $options .= ', ';
-                }
-
-                $options .= $option . ': ';
-                // When javascript needs to be applied as a jQuery option's value, no quotes are needed
-                if (is_string($value) && substr($value, 0, 3) == 'js:') {
-                    $options .= substr($value, 3);
-                } else {
-                    $options .= var_export($value, true);
-                }
-            }
-            echo '{ ', $options, ' }';
-        }
-    }
-
-    /**
      * Many of the included elements make use of the <input> tag for display.  These include the Hidden, Textbox,
      * Password, Date, Color, Button, Email, and File element classes.  The project's other element classes will
      * override this method with their own implementation.
@@ -203,16 +153,6 @@ abstract class AbstractElement extends AbstractBase
 
         echo '<input', $this->getAttributes(), '/>';
     }
-
-    /**
-     * If an element requires inline stylesheet definitions, this method is used send them to the browser before the form is rendered
-     */
-    public function renderCSS() {}
-
-    /**
-     * If an element requires javascript to be loaded, this method is used send them to the browser after the form is rendered
-     */
-    public function renderJS() {}
 
     /**
      * Set the element's label text

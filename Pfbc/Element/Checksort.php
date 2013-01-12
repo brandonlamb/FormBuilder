@@ -50,30 +50,12 @@ class Checksort extends Sort
             echo ' onclick="updateChecksort(this, \'', str_replace(array('"', "'"), array('&quot;', "\'"), $text), '\');"/>', $text, '</label>';
 
             if (in_array($value, $this->attributes['value'])) {
-                $existing .= '<li id="' . $this->attributes['id'] . "-sort-" . $count . '" class="ui-state-default"><input type="hidden" name="' . $this->attributes['name'] . '" value="' . $value . '"/>' . $text . '</li>';
+                $existing .= '<li id="' . $this->attributes['id'] . '-sort-' . $count . '" class="ui-state-default"><input type="hidden" name="' . $this->attributes['name'] . '" value="' . $value . '"/>' . $text . '</li>';
             }
 
             ++$count;
         }
 
         echo '<ul id="', $this->attributes['id'], '">', $existing, '</ul>';
-    }
-
-    public function renderJS()
-    {
-        echo <<<JS
-if (typeof updateChecksort != "function") {
-    public function updateChecksort(element, text)
-    {
-        var position = element.id.lastIndexOf("-");
-        var id = element.id.substr(0, position);
-        var index = element.id.substr(position + 1);
-        if (element.checked) {
-            jQuery("#" + id).append('<li id="' + id + '-sort-' + index + '" class="ui-state-default"><input type="hidden" name="{$this->attributes['name']}" value="' + element.value + '"/>' + text + '</li>');
-        } else
-            jQuery("#" + id + "-sort-" + index).remove();
-    }
-}
-JS;
     }
 }

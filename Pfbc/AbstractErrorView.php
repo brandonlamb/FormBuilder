@@ -26,6 +26,4 @@ abstract class AbstractErrorView extends AbstractBase
     {
         echo 'jQuery("#', $this->form->getAttribute("id"), ' .alert-error").remove();';
     }
-
-    public function renderCSS() {}
 }

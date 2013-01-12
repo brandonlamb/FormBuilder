@@ -5,11 +5,11 @@ use Pfbc\AbstractElement;
 
 class Inline extends AbstractView
 {
-    protected $class = "form-inline";
+    protected $class = 'form-inline';
 
     public function render()
     {
-        $this->form->appendAttribute("class", $this->class);
+        $this->form->appendAttribute('class', $this->class);
 
         echo '<form', $this->form->getAttributes(), '>';
         $this->form->getErrorView()->render();

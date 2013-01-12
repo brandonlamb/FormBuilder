@@ -4,18 +4,13 @@ use Pfbc\AbstractElement;
 
 class Hidden extends AbstractElement
 {
-    protected $attributes = array("type" => "hidden");
+    protected $attributes = array('type' => 'hidden');
 
-    public function __construct($name, $value = "", array $properties = null)
+    public function __construct($name, $value = '', array $properties = null)
     {
-        if (!is_array($properties)) {
-            $properties = array();
-        }
+        !is_array($properties) && $properties = array();
+        !empty($value) && $properties['value'] = $value;
 
-        if (!empty($value)) {
-            $properties["value"] = $value;
-        }
-
-        parent::__construct("", $name, $properties);
+        parent::__construct('', $name, $properties);
     }
 }

@@ -3,5 +3,5 @@ namespace Pfbc\Element;
 
 class DateTime extends Textbox
 {
-    protected $attributes = array("type" => "datetime");
+    protected $attributes = array('type' => 'datetime');
 }

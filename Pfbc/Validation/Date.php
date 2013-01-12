@@ -4,7 +4,7 @@ use Pfbc\AbstractValidation;
 
 class Date extends AbstractValidation
 {
-    protected $message = "Error: %element% must contain a valid date.";
+    protected $message = 'Error: %element% must contain a valid date.';
 
     public function isValid($value)
     {

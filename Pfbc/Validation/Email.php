@@ -4,7 +4,7 @@ use Pfbc\AbstractValidation;
 
 class Email extends AbstractValidation
 {
-    protected $message = "Error: %element% must contain an email address.";
+    protected $message = 'Error: %element% must contain an email address.';
 
     public function isValid($value)
     {

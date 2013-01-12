@@ -14,18 +14,7 @@ abstract class AbstractView extends AbstractBase
         $this->configure($properties);
     }
 
-    /**
-     * jQuery is used to apply css entries to the last element.
-     */
-    public function jQueryDocumentReady() {}
-
     public function render() {}
-
-    public function renderCSS()
-    {
-        echo 'label span.required { color: #B94A48; }';
-        echo 'span.help-inline, span.help-block { color: #888; font-size: .9em; font-style: italic; }';
-    }
 
     protected function renderDescriptions($element)
     {
@@ -39,8 +28,6 @@ abstract class AbstractView extends AbstractBase
             echo '<span class="help-block">', $longDesc, '</span>';;
         }
     }
-
-    public function renderJS() {}
 
     /**
      * Render a label

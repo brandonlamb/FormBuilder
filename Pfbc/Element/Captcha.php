@@ -1,6 +1,7 @@
 <?php
 namespace Pfbc\Element;
 use Pfbc\AbstractElement;
+use Pfbc\Validation\Captcha;
 
 class Captcha extends AbstractElement
 {
@@ -26,8 +27,8 @@ class Captcha extends AbstractElement
 
     public function render()
     {
-        $this->validation[] = new \Pfbc\Validation\Captcha($this->privateKey);
-        require_once(__DIR__ . '/../Resources/recaptchalib.php');
+        $this->validation[] = new Captcha($this->privateKey);
+        require_once __DIR__ . '/../Resources/recaptchalib.php';
         echo recaptcha_get_html($this->publicKey);
     }
 }

@@ -4,7 +4,7 @@ use Pfbc\AbstractValidation;
 
 class Url extends AbstractValidation
 {
-    protected $message = "Error: %element% must contain a url (e.g. http://www.google.com).";
+    protected $message = 'Error: %element% must contain a url (e.g. http://www.google.com).';
 
     public function isValid($value)
     {

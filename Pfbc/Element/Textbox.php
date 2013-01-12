@@ -4,7 +4,7 @@ use Pfbc\AbstractElement;
 
 class Textbox extends AbstractElement
 {
-    protected $attributes = array("type" => "text");
+    protected $attributes = array('type' => 'text');
     protected $prepend;
     protected $append;
 
@@ -12,30 +12,31 @@ class Textbox extends AbstractElement
     {
         $addons = array();
         if (!empty($this->prepend)) {
-            $addons[] = "input-prepend";
+            $addons[] = 'input-prepend';
         }
 
         if (!empty($this->append)) {
-            $addons[] = "input-append";
+            $addons[] = 'input-append';
         }
 
         if (!empty($addons)) {
-            echo '<div class="', implode(" ", $addons), '">';
+            echo '<div class="', implode(' ', $addons), '">';
         }
 
-        $this->renderAddOn("prepend");
+        $this->renderAddOn('prepend');
         parent::render();
-        $this->renderAddOn("append");
+        $this->renderAddOn('append');
 
-        if (!empty($addons))
+        if (!empty($addons)) {
             echo '</div>';
+        }
     }
 
-    protected function renderAddOn($type = "prepend")
+    protected function renderAddOn($type = 'prepend')
     {
         if (!empty($this->$type)) {
             $span = true;
-            if (strpos($this->$type, "<button") !== false) {
+            if (strpos($this->$type, '<button') !== false) {
                 $span = false;
             }
 

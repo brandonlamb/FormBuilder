@@ -5,11 +5,11 @@ use Pfbc\AbstractElement;
 
 class SideBySide extends AbstractView
 {
-    protected $class = "form-horizontal";
+    protected $class = 'form-horizontal';
 
     public function render()
     {
-        $this->form->appendAttribute("class", $this->class);
+        $this->form->appendAttribute('class', $this->class);
 
         echo '<form', $this->form->getAttributes(), '><fieldset>';
         $this->form->getErrorView()->render();
