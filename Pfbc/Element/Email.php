@@ -1,6 +1,6 @@
 <?php
 namespace Pfbc\Element;
-use Pfbc\Validation\Email;
+use Pfbc\Validation\Email as EmailValidation;
 
 class Email extends Textbox
 {
@@ -8,7 +8,7 @@ class Email extends Textbox
 
     public function render()
     {
-        $this->validation[] = new Email();
+        $this->validation[] = new EmailValidation();
         parent::render();
     }
 }
