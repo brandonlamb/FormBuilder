@@ -1,15 +1,17 @@
 <?php
 namespace Pfbc\View;
-use Pfbc\AbstractView;
-use Pfbc\AbstractElement;
 
-class SideBySide extends AbstractView
+use Pfbc\AbstractView,
+    Pfbc\ViewInterface,
+    Pfbc\AbstractElement;
+
+class SideBySide extends AbstractView implements ViewInterface
 {
     protected $class = 'form-horizontal';
 
     public function render()
     {
-        $this->form->appendAttribute('class', $this->class);
+        null !== $this->class && $this->form->appendAttribute('class', $this->class);
 
         echo '<form', $this->form->getAttributes(), '><fieldset>';
         $this->form->getErrorView()->render();
@@ -20,7 +22,7 @@ class SideBySide extends AbstractView
         for ($e = 0; $e < $elementSize; ++$e) {
             $element = $elements[$e];
 
-            if ($element instanceof \Pfbc\Element\Hidden || $element instanceof \Pfbc\Element\HTML) {
+            if ($element instanceof Element\Hidden || $element instanceof Element\Html) {
                 $element->render();
             } elseif ($element instanceof \Pfbc\Element\Button) {
                 if ($e == 0 || !$elements[($e - 1)] instanceof \Pfbc\Element\Button) {
@@ -47,7 +49,7 @@ class SideBySide extends AbstractView
     {
         $label = $element->getLabel();
         if (!empty($label)) {
-            echo '<label class="control-label" for="', $element->getAttribute("id"), '">';
+            echo '<label class="control-label" for="', $element->getAttribute('id'), '">';
             if ($element->isRequired()) {
                 echo '<span class="required">* </span>';
             }

@@ -5,9 +5,9 @@ use Pfbc\AbstractView,
     Pfbc\ViewInterface,
     Pfbc\AbstractElement;
 
-class Vertical extends AbstractView implements ViewInterface
+class Horizontal extends AbstractView implements ViewInterface
 {
-    protected $class;
+    protected $class = 'form-horizontal';
 
     public function render()
     {
@@ -22,20 +22,22 @@ class Vertical extends AbstractView implements ViewInterface
         for ($e = 0; $e < $elementSize; ++$e) {
             $element = $elements[$e];
 
-            if ($element instanceof \Pfbc\Element\Button) {
-                if ($e == 0 || !$elements[($e - 1)] instanceof \Pfbc\Element\Button) {
+            if ($element instanceof Element\Hidden || $element instanceof Element\Html) {
+                $element->render();
+            } elseif ($element instanceof Element\Button) {
+                if ($e == 0 || !$elements[($e - 1)] instanceof Element\Button) {
                     echo '<div class="form-actions">';
                 } else {
                     echo ' ';
                 }
+
                 $element->render();
-                if (($e + 1) == $elementSize || !$elements[($e + 1)] instanceof \Pfbc\Element\Button) {
+
+                if (($e + 1) == $elementSize || !$elements[($e + 1)] instanceof Element\Button) {
                     echo '</div>';
                 }
             } else {
-                $this->renderLabel($element);
-                $element->render();
-                $this->renderDescriptions($element);
+                echo '<div class="control-group">', $this->renderLabel($element), '<div class="controls">', $element->render(), $this->renderDescriptions($element), '</div></div>';
                 ++$elementCount;
             }
         }
@@ -46,13 +48,12 @@ class Vertical extends AbstractView implements ViewInterface
     protected function renderLabel(AbstractElement $element)
     {
         $label = $element->getLabel();
-        echo '<label for="', $element->getAttribute("id"), '">';
         if (!empty($label)) {
+            echo '<label class="control-label" for="', $element->getAttribute('id'), '">';
             if ($element->isRequired()) {
                 echo '<span class="required">* </span>';
             }
-            echo $label;
+            echo $label, '</label>';
         }
-        echo '</label>';
     }
 }

@@ -1,9 +1,11 @@
 <?php
 namespace Pfbc\View;
-use Pfbc\AbstractView;
-use Pfbc\AbstractElement;
 
-class Inline extends AbstractView
+use Pfbc\AbstractView,
+    Pfbc\ViewInterface,
+    Pfbc\AbstractElement;
+
+class Inline extends AbstractView implements ViewInterface
 {
     protected $class = 'form-inline';
 

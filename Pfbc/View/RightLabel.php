@@ -1,15 +1,17 @@
 <?php
 namespace Pfbc\View;
-use Pfbc\AbstractView;
-use Pfbc\AbstractElement;
 
-class RightLabel extends AbstractView
+use Pfbc\AbstractView,
+    Pfbc\ViewInterface,
+    Pfbc\AbstractElement;
+
+class RightLabel extends AbstractView implements ViewInterface
 {
     protected $class = 'form-horizontal';
 
     public function render()
     {
-        $this->form->appendAttribute('class', $this->class);
+        null !== $this->class && $this->form->appendAttribute('class', $this->class);
 
         echo '<form', $this->form->getAttributes(), '><fieldset>';
         $this->form->getErrorView()->render();
@@ -20,10 +22,10 @@ class RightLabel extends AbstractView
         for ($e = 0; $e < $elementSize; ++$e) {
             $element = $elements[$e];
 
-            if ($element instanceof \Pfbc\Element\Hidden || $element instanceof \Pfbc\Element\HTML) {
+            if ($element instanceof Element\Hidden || $element instanceof Element\Html) {
                 $element->render();
-            } elseif ($element instanceof \Pfbc\Element\Button) {
-                if ($e == 0 || !$elements[($e - 1)] instanceof \Pfbc\Element\Button) {
+            } elseif ($element instanceof Element\Button) {
+                if ($e == 0 || !$elements[($e - 1)] instanceof Element\Button) {
                     echo '<div class="form-actions">';
                 } else {
                     echo ' ';
@@ -31,7 +33,7 @@ class RightLabel extends AbstractView
 
                 $element->render();
 
-                if (($e + 1) == $elementSize || !$elements[($e + 1)] instanceof \Pfbc\Element\Button) {
+                if (($e + 1) == $elementSize || !$elements[($e + 1)] instanceof Element\Button) {
                     echo '</div>';
                 }
             } else {
