@@ -16,6 +16,10 @@ abstract class AbstractValidation extends AbstractBase
         !empty($message) && $this->message = $message;
     }
 
+    /**
+     * Get the message
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;

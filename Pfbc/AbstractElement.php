@@ -9,11 +9,6 @@ abstract class AbstractElement extends AbstractBase
     protected $errors = array();
 
     /**
-     * @var Form
-     */
-    protected $form;
-
-    /**
      * @var string, element's label
      */
     protected $label;

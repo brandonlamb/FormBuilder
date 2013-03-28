@@ -1,5 +1,6 @@
 <?php
 namespace Pfbc\ErrorView;
+
 use Pfbc\AbstractErrorView;
 
 class Standard extends AbstractErrorView

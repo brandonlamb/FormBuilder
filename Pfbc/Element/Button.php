@@ -1,5 +1,6 @@
 <?php
 namespace Pfbc\Element;
+
 use Pfbc\AbstractElement;
 
 class Button extends AbstractElement
@@ -8,11 +9,6 @@ class Button extends AbstractElement
      * @var array
      */
     protected $attributes = array('type' => 'submit', 'value' => 'Submit');
-
-    /**
-     * @var string
-     */
-    protected $icon;
 
     /**
      * Constructor

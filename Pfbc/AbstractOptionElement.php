@@ -35,7 +35,7 @@ abstract class AbstractOptionElement extends AbstractElement
         $position = strpos($value, ':pfbc');
         if ($position !== false) {
             if ($position == 0) {
-                $value = "";
+                $value = '';
             } else {
                 $value = substr($value, 0, $position);
             }

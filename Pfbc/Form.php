@@ -11,17 +11,12 @@ class Form extends AbstractBase
 	/**
 	 * @var string
 	 */
-	protected $prefix = "http";
+	protected $prefix = 'http';
 
 	/**
 	 * @var array
 	 */
 	protected $values = array();
-
-	/**
-	 * @var array
-	 */
-	protected $attributes = array();
 
 	protected $ajax;
 	protected $ajaxCallback;
@@ -44,13 +39,12 @@ class Form extends AbstractBase
 	 * Constructor
 	 * @param string $id
 	 */
-	public function __construct($id = 'pfbc')
+	public function __construct($id = 'pfbc', array $attributes = array())
 	{
-		$this->configure(array(
-			'action' => basename($_SERVER['SCRIPT_NAME']),
-			'id' => preg_replace('/\W/', '-', $id),
-			'method' => 'post'
-		));
+		!isset($attributes['action']) && $attributes['action'] = basename($_SERVER['SCRIPT_NAME']);
+		!isset($attributes['id']) && $attributes['id'] = preg_replace('/\W/', '-', $id);
+		!isset($attributes['method']) && $attributes['method'] = 'post';
+		$this->configure($attributes);
 
 		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 			$this->prefix = 'https';
@@ -97,8 +91,11 @@ class Form extends AbstractBase
 		}
 	}
 
-	/*Valldation errors are saved in the session after the form submission, and will be displayed to the user
-	when redirected back to the form.*/
+	/**
+	 * Valldation errors are saved in the session after the form submission,
+	 * and will be displayed to the user
+	 * when redirected back to the form.
+	 */
 	public static function setError($id, $errors, $element = '')
 	{
 		if (!is_array($errors)) {
@@ -218,6 +215,24 @@ class Form extends AbstractBase
 	protected static function recover($id)
 	{
 		return !empty($_SESSION['pfbc'][$id]['form']) ? unserialize($_SESSION['pfbc'][$id]['form']) : false;
+	}
+
+	/**
+	 * Return opening form tag
+	 * @return string
+	 */
+	public function openForm()
+	{
+		return '<form' . $this->getAttributes() . '>';
+	}
+
+	/**
+	 * Return closing form tag
+	 * @return string
+	 */
+	public function closeForm()
+	{
+		return '</form>';
 	}
 
 	/**

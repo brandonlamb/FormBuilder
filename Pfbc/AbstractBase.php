@@ -1,13 +1,13 @@
 <?php
 namespace Pfbc;
-use Phalcon\DI\Injectable;
 
-abstract class AbstractBase extends Injectable
+abstract class AbstractBase
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $attributes = array();
+
+    /** @var Form */
+    protected $form;
 
     /**
      * Set form configuration options
@@ -56,14 +56,6 @@ abstract class AbstractBase extends Injectable
     }
 
     /**
-     * This method can be used to view a class' state.
-     */
-    public function debug()
-    {
-        echo '<pre>', print_r($this, true), '</pre>';
-    }
-
-    /**
      * This method prevents double/single quotes in html attributes from breaking the markup.
      * @param string $str
      * @return string
@@ -94,6 +86,7 @@ abstract class AbstractBase extends Injectable
         if (empty($this->attributes)) {
             return '';
         }
+
         !is_array($ignore) && $ignore = array($ignore);
 
         $str = '';
@@ -106,6 +99,19 @@ abstract class AbstractBase extends Injectable
         }
 
         return $str;
+    }
+
+    /**
+     * Set multiple attributes via array
+     * @param array $attributes
+     * @return $this
+     */
+    public function setAttributes(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $this->attributes[$key] = $value;
+        }
+        return $this;
     }
 
     /**

@@ -3,7 +3,8 @@ namespace Pfbc;
 
 abstract class AbstractView extends AbstractBase
 {
-    protected $form;
+    /** @var string */
+    protected $class;
 
     /**
      * Constructor
@@ -13,8 +14,6 @@ abstract class AbstractView extends AbstractBase
     {
         $this->configure($properties);
     }
-
-    public function render() {}
 
     protected function renderDescriptions($element)
     {
@@ -28,10 +27,4 @@ abstract class AbstractView extends AbstractBase
             echo '<span class="help-block">', $longDesc, '</span>';;
         }
     }
-
-    /**
-     * Render a label
-     * @param Element $element
-     */
-    protected function renderLabel(AbstractElement $element) {}
 }

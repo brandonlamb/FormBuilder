@@ -3,8 +3,6 @@ namespace Pfbc;
 
 abstract class AbstractErrorView extends AbstractBase
 {
-    protected $form;
-
     abstract public function applyAjaxErrorResponse();
     abstract public function render();
     abstract public function renderAjaxErrorResponse();
@@ -24,6 +22,6 @@ abstract class AbstractErrorView extends AbstractBase
      */
     public function clear()
     {
-        echo 'jQuery("#', $this->form->getAttribute("id"), ' .alert-error").remove();';
+        echo 'jQuery("#', $this->form->getAttribute('id'), ' .alert-error").remove();';
     }
 }
