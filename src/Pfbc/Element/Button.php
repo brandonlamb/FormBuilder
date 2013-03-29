@@ -25,8 +25,15 @@ class Button extends AbstractElement
         }
 
         $class = 'btn';
+
         if (empty($type) || $type == 'submit') {
             $class .= ' btn-primary';
+            !isset($properties['name']) && $properties['name'] = 'submit';
+        }
+
+        if ($type == 'reset') {
+            $class .= ' btn-secondary';
+            !isset($properties['name']) && $properties['name'] = 'reset';
         }
 
         if (!empty($properties['class'])) {

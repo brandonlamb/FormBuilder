@@ -96,12 +96,23 @@ class Form extends AbstractBase
 	}
 
 	/**
+	 * Get/set the error view object
+	 * @param ViewInterface $view
+	 * @return ViewInterface
+	 */
+	public function errorView(AbstractErrorView $view = null)
+	{
+		null !== $view && $this->errorView = $view;
+		return $this->errorView;
+	}
+
+	/**
 	 * When ajax is used to submit the form's data, validation errors need to be manually sent back to the form using json
 	 * @param string $id
 	 */
 	public static function renderAjaxErrorResponse($id = 'pfbc')
 	{
-		$form = self::recover($id);
+		$form = static::recover($id);
 		if ($form instanceof Form) {
 			$form->errorView->renderAjaxErrorResponse();
 		}
@@ -166,7 +177,7 @@ class Form extends AbstractBase
 	{
 		$valid = true;
 		// The form's instance is recovered (unserialized) from the session
-		$form = self::recover($id);
+		$form = static::recover($id);
 		if (empty($form)) {
 			return false;
 		}
@@ -174,8 +185,8 @@ class Form extends AbstractBase
 		$data = ($_SERVER['REQUEST_METHOD'] == 'POST') ? $_POST : $_GET;
 
 		// Any values/errors stored in the session for this form are cleared
-		self::clearValues($id);
-		self::clearErrors($id);
+		static::clearValues($id);
+		static::clearErrors($id);
 
 		// Each element's value is saved in the session and checked against any validation rules applied to the element
 		if (!empty($form->elements)) {
@@ -200,14 +211,14 @@ class Form extends AbstractBase
 						$value = stripslashes($value);
 					}
 
-					self::setSessionValue($id, $name, $value);
+					static::setSessionValue($id, $name, $value);
 				} else {
 					$value = null;
 				}
 
 				// If a validation error is found, the error message is saved in the session along with the element's name
 				if (!$element->isValid($value)) {
-					self::setError($id, $element->getErrors(), $name);
+					static::setError($id, $element->getErrors(), $name);
 					$valid = false;
 				}
 			}
@@ -216,9 +227,9 @@ class Form extends AbstractBase
 		// If no validation errors were found, the form's session values are cleared
 		if ($valid) {
 			if ($clearValues) {
-				self::clearValues($id);
+				static::clearValues($id);
 			}
-			self::clearErrors($id);
+			static::clearErrors($id);
 		}
 
 		return $valid;
@@ -262,11 +273,18 @@ class Form extends AbstractBase
 
 		// If the element doesn't have a specified id, a generic identifier is applied.
 		$id = $element->getAttribute('id');
+
 		if (empty($id)) {
-			$element->setAttribute('id', $this->attributes['id'] . '-element-' . sizeof($this->elements));
+			$id = $this->attributes['id'] . '-element-' . sizeof($this->elements);
+			$element->setAttribute('id', $id);
 		}
+
+		// use id if element name attribute is empty
+		$elementName = $element->getAttribute('name');
+		empty($elementName) && $elementName = $id;
+
 		$this->elements[] = $element;
-		$this->elementsMap[$element->getAttribute('name')] = count($this->elements);
+		$this->elementsMap[$elementName] = count($this->elements) - 1;
 
 		// For ease-of-use, the form tag's encytype attribute is automatically set if the File element class is added
 		if ($element instanceof AbstractElement\File) {
@@ -375,7 +393,7 @@ class Form extends AbstractBase
 
 		// When validation errors occur, the form's submitted values are saved in a session
 		// array, which allows them to be pre-populated when the user is redirected to the form
-		$values = self::getSessionValues($this->attributes['id']);
+		$values = static::getSessionValues($this->attributes['id']);
 		if (!empty($values))
 			$this->setValues($values);
 		$this->applyValues();
@@ -397,7 +415,9 @@ class Form extends AbstractBase
 		}
 	}
 
-	/*The save method serialized the form's instance and saves it in the session.*/
+	/**
+	 * The save method serialized the form's instance and saves it in the session.
+	 */
 	protected function save()
 	{
 		$_SESSION['pfbc'][$this->attributes['id']]['form'] = serialize($this);
@@ -410,7 +430,21 @@ class Form extends AbstractBase
 	 */
 	public function setValues(array $values)
 	{
+		foreach ($values as $key => $value) {
+			if (null === $value) {
+				unset($values[$key]);
+			}
+		}
 		$this->values = array_merge($this->values, $values);
 		return $this;
+	}
+
+	/**
+	 * Get currently set values
+	 * @return array
+	 */
+	public function getValues()
+	{
+		return $this->values;
 	}
 }

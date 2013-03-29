@@ -57,6 +57,15 @@ abstract class AbstractElement extends AbstractBase
     }
 
     /**
+     * Get array of errors
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
      * Get form label
      * @return string
      */

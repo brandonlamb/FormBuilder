@@ -15,7 +15,7 @@ class Standard extends AbstractErrorView
         else
             var errorFormat = errorSize + " errors were";
 
-        var errorHTML = '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">×</a><strong class="alert-heading">The following ' + errorFormat + ' found:</strong><ul>';
+        var errorHTML = '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">x</a><strong class="alert-heading">The following ' + errorFormat + ' found:</strong><ul>';
         for (e = 0; e < errorSize; ++e)
             errorHTML += '<li>' + response.errors[e] + '</li>';
         errorHTML += '</ul></div>';
@@ -53,7 +53,7 @@ JS;
 
             echo <<<HTML
             <div class="alert alert-error">
-                <a class="close" data-dismiss="alert" href="#">×</a>
+                <a class="close" data-dismiss="alert" href="#">x</a>
                 <strong class="alert-heading">The following $format found:</strong>
                 <ul><li>$errors</li></ul>
             </div>
