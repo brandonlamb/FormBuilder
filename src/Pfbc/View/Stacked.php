@@ -60,10 +60,8 @@ class Stacked extends AbstractView implements ViewInterface
         $label = $element->getLabel();
         if (!empty($label)) {
             echo '<label for="', $element->getAttribute('id'), '">';
-            if ($element->isRequired()) {
-                echo '<span class="required">* </span>';
-            }
-            echo $label, '</label>';
+            echo $element->isRequired() ? '<span class="required">' . $label . ' * </span>' : $label;
+            echo '</label>';
         }
     }
 }
