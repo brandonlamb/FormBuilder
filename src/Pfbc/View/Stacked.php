@@ -9,6 +9,9 @@ class Stacked extends AbstractView implements ViewInterface
 {
     protected $class = 'form-stacked';
 
+    /**
+     * @{inherit}
+     */
     public function render()
     {
         null !== $this->class && $this->form->appendAttribute('class', $this->class);
@@ -49,7 +52,10 @@ class Stacked extends AbstractView implements ViewInterface
         echo '</div></fieldset></form>';
     }
 
-    protected function renderLabel(AbstractElement $element)
+    /**
+     * @{inherit}
+     */
+    public function renderLabel(AbstractElement $element)
     {
         $label = $element->getLabel();
         if (!empty($label)) {

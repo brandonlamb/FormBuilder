@@ -7,6 +7,9 @@ use Pfbc\AbstractView,
 
 class Simple extends AbstractView implements ViewInterface
 {
+    /**
+     * @{inherit}
+     */
     public function render()
     {
         null !== $this->class && $this->form->appendAttribute('class', $this->class);
@@ -27,5 +30,21 @@ class Simple extends AbstractView implements ViewInterface
         }
 
         echo '</form>';
+    }
+
+    /**
+     * @{inherit}
+     */
+    public function renderLabel(AbstractElement $element)
+    {
+        $label = $element->getLabel();
+        if (!empty($label)) {
+            echo '<label for="', $element->getAttribute("id"), '">';
+            echo $label;
+            if ($element->isRequired()) {
+                echo '<span class="required"> * </span>';
+            }
+            echo '</label>';
+        }
     }
 }

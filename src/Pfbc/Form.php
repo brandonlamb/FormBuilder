@@ -9,6 +9,11 @@ class Form extends AbstractBase
 	protected $elements = array();
 
 	/**
+	 * @var array
+	 */
+	protected $elementsMap = array();
+
+	/**
 	 * @var string
 	 */
 	protected $prefix = 'http';
@@ -77,6 +82,17 @@ class Form extends AbstractBase
 	public function __sleep()
 	{
 		return array('attributes', 'elements', 'errorView');
+	}
+
+	/**
+	 * Get/set the view object
+	 * @param ViewInterface $view
+	 * @return ViewInterface
+	 */
+	public function view(ViewInterface $view = null)
+	{
+		null !== $view && $this->view = $view;
+		return $this->view;
 	}
 
 	/**
@@ -250,6 +266,7 @@ class Form extends AbstractBase
 			$element->setAttribute('id', $this->attributes['id'] . '-element-' . sizeof($this->elements));
 		}
 		$this->elements[] = $element;
+		$this->elementsMap[$element->getAttribute('name')] = count($this->elements);
 
 		// For ease-of-use, the form tag's encytype attribute is automatically set if the File element class is added
 		if ($element instanceof AbstractElement\File) {
@@ -257,6 +274,20 @@ class Form extends AbstractBase
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Return an element by name
+	 * @param string $name
+	 * @return Element
+	 * @throws \Exception
+	 */
+	public function getElement($name)
+	{
+		if (!isset($this->elementsMap[$name], $this->elements[$this->elementsMap[$name]])) {
+			throw new \Exception('Element ' . $name . ' does not exist');
+		}
+		return $this->elements[$this->elementsMap[$name]];
 	}
 
 	/**

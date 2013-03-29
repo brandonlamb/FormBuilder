@@ -8,4 +8,10 @@ interface ViewInterface
      * @return string
      */
     public function render();
+
+    /**
+     * Render the element label
+     * @return string
+     */
+    public function renderLabel(AbstractElement $element);
 }

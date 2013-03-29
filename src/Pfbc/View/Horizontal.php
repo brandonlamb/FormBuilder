@@ -9,6 +9,9 @@ class Horizontal extends AbstractView implements ViewInterface
 {
     protected $class = 'form-horizontal';
 
+    /**
+     * @{inherit}
+     */
     public function render()
     {
         null !== $this->class && $this->form->appendAttribute('class', $this->class);
@@ -45,7 +48,10 @@ class Horizontal extends AbstractView implements ViewInterface
         echo '</form>';
     }
 
-    protected function renderLabel(AbstractElement $element)
+    /**
+     * @{inherit}
+     */
+    public function renderLabel(AbstractElement $element)
     {
         $label = $element->getLabel();
         if (!empty($label)) {
