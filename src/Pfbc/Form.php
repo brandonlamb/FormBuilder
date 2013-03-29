@@ -245,6 +245,15 @@ class Form extends AbstractBase
 	}
 
 	/**
+	 * Reset session data for form
+	 * @param string $id
+	 */
+	public static function reset($id)
+	{
+		unset($_SESSION['pfbc'][$id]);
+	}
+
+	/**
 	 * Return opening form tag
 	 * @return string
 	 */
@@ -375,8 +384,9 @@ class Form extends AbstractBase
 	/**
 	 * Renders the form
 	 * @param bool $returnHTML
+	 * @return string
 	 */
-	public function render($returnHTML = false)
+	public function render($returnHTML = true)
 	{
 		if (!empty($this->labelToPlaceholder)) {
 			foreach ($this->elements as $element) {
