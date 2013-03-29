@@ -11,7 +11,7 @@ class Inline extends AbstractView implements ViewInterface
 
     public function render()
     {
-        $this->form->appendAttribute('class', $this->class);
+        null !== $this->class && $this->form->appendAttribute('class', $this->class);
 
         echo '<form', $this->form->getAttributes(), '>';
         $this->form->getErrorView()->render();
